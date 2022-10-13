@@ -9,7 +9,7 @@ import net.fortuna.ical4j.model.Calendar;
 public class App {
     public static void main(String[] args) {
         // replace this string with the URL to the iCalendar stream
-        final String STREAM_URL = "<repalce_me>";
+        final String STREAM_URL = "<replace_me>";
 
         try {
             // get the input stream

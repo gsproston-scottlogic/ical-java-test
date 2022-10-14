@@ -31,12 +31,18 @@ public class App {
                 if (booking.getName().equals("VEVENT")) {
                     // parse out desk name, user's name, start and end time
                     final String userName = booking.getProperty("ATTENDEE").getParameter("CN").getValue();
-                    final String deskName = booking.getProperty("DESCRIPTION").getValue();
+                    String deskName = booking.getProperty("DESCRIPTION").getValue();
+                    // remove the leading "Spaces: " string
+                    deskName = deskName.replace("Spaces: ", "");
 
+                    // we want date times in UTC
                     final ZoneId timeZone = ZoneId.of("UTC");
+                    // get the end time property datetime
                     final DateProperty endDateTimeProperty = booking.getProperty("DTEND");
                     final Date endDateTime = endDateTimeProperty.getDate();
+                    // add zone information
                     final ZonedDateTime endDateTimeUtc = ZonedDateTime.ofInstant(endDateTime.toInstant(), timeZone);
+                    // do the same for start time
                     final DateProperty startDateTimeProperty = booking.getProperty("DTSTART");
                     final Date startDateTime = startDateTimeProperty.getDate();
                     final ZonedDateTime startDateTimeUtc = ZonedDateTime.ofInstant(startDateTime.toInstant(), timeZone);

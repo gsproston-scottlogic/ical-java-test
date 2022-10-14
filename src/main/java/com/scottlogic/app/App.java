@@ -2,6 +2,8 @@ package com.scottlogic.app;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -12,7 +14,7 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 public class App {
     public static void main(String[] args) {
         // replace this string with the URL to the iCalendar stream
-        final String STREAM_URL = "CHANGE ME";
+        final String STREAM_URL = "CHANGEME";
 
         try {
             // get the input stream
@@ -31,13 +33,16 @@ public class App {
                     final String userName = booking.getProperty("ATTENDEE").getParameter("CN").getValue();
                     final String deskName = booking.getProperty("DESCRIPTION").getValue();
 
+                    final ZoneId timeZone = ZoneId.of("UTC");
                     final DateProperty endDateTimeProperty = booking.getProperty("DTEND");
                     final Date endDateTime = endDateTimeProperty.getDate();
+                    final ZonedDateTime endDateTimeUtc = ZonedDateTime.ofInstant(endDateTime.toInstant(), timeZone);
                     final DateProperty startDateTimeProperty = booking.getProperty("DTSTART");
                     final Date startDateTime = startDateTimeProperty.getDate();
+                    final ZonedDateTime startDateTimeUtc = ZonedDateTime.ofInstant(startDateTime.toInstant(), timeZone);
 
                     System.out.println(String.format("%s has booked %s from %s to %s", userName, deskName,
-                            startDateTime.toString(), endDateTime.toString()));
+                            startDateTimeUtc.toString(), endDateTimeUtc.toString()));
                 }
             }
         } catch (Exception e) {
